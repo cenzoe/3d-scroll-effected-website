@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bandline — Find your IELTS band</title>
+<meta name="description" content="Bandline is a scroll-driven guide to the IELTS band scale, the four skills, and how to move from where you are to where you need to be." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,680;1,9..144,500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+
+/* ---------- tokens ---------- */
+:root{
+  --bg:#0B1220;
+  --bg-panel:#111A2B;
+  --bg-panel-2:#16213A;
+  --paper:#F1EADD;
+  --paper-dim:#E4DBC8;
+  --ink:#ECE7DB;
+  --ink-dim:#C7C2B4;
+  --muted:#818BA1;
+  --gold:#D4A24C;
+  --gold-soft:rgba(212,162,76,.14);
+  --gold-line:rgba(212,162,76,.35);
+  --teal:#57CFC1;
+  --line:rgba(236,231,219,.12);
+  --line-strong:rgba(236,231,219,.22);
+  --radius:14px;
+  --serif:'Fraunces', Georgia, serif;
+  --sans:'IBM Plex Sans', Arial, sans-serif;
+  --mono:'IBM Plex Mono', monospace;
+}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--sans);
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+::selection{background:var(--gold-soft); color:var(--gold);}
+a{color:inherit; text-decoration:none;}
+img,canvas{display:block;}
+h1,h2,h3{font-family:var(--serif); font-weight:600; margin:0; letter-spacing:-.01em;}
+p{margin:0;}
+button{font-family:inherit;}
+
+.eyebrow{
+  font-family:var(--mono);
+  font-size:12.5px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--gold);
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+}
+.eyebrow::before{
+  content:'';
+  width:16px; height:1px;
+  background:var(--gold);
+  display:inline-block;
+}
+
+.wrap{
+  max-width:1180px;
+  margin:0 auto;
+  padding:0 40px;
+}
+
+:focus-visible{
+  outline:2px solid var(--teal);
+  outline-offset:3px;
+}
+
+/* ---------- nav ---------- */
+nav{
+  position:fixed; top:0; left:0; right:0; z-index:100;
+  padding:22px 40px;
+  display:flex; align-items:center; justify-content:space-between;
+  transition:background .35s ease, border-color .35s ease, padding .35s ease;
+  border-bottom:1px solid transparent;
+}
+nav.scrolled{
+  background:rgba(11,18,32,.86);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+  padding:16px 40px;
+}
+.logo{
+  font-family:var(--serif);
+  font-size:20px;
+  font-weight:600;
+  display:flex; align-items:baseline; gap:6px;
+}
+.logo em{
+  font-style:italic; color:var(--gold);
+}
+.nav-links{display:flex; gap:34px; align-items:center;}
+.nav-links a{
+  font-size:14px; color:var(--ink-dim);
+  transition:color .2s ease;
+  position:relative;
+}
+.nav-links a:hover{color:var(--ink);}
+.nav-cta{
+  font-size:13.5px;
+  font-family:var(--mono);
+  color:var(--bg) !important;
+  background:var(--gold);
+  padding:10px 18px;
+  border-radius:999px;
+  transition:transform .2s ease, box-shadow .2s ease;
+}
+.nav-cta:hover{transform:translateY(-1px); box-shadow:0 8px 22px rgba(212,162,76,.25);}
+.nav-menu-btn{display:none; background:none; border:none; color:var(--ink); font-size:22px; cursor:pointer;}
+
+@media (max-width:820px){
+  .nav-links{display:none;}
+  .nav-menu-btn{display:block;}
+}
+
+/* ---------- hero ---------- */
+.hero{
+  position:relative;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  padding:140px 40px 100px;
+  overflow:hidden;
+}
+.hero-bg-glow{
+  position:absolute; inset:0;
+  background:radial-gradient(ellipse 60% 50% at 72% 38%, rgba(212,162,76,.10), transparent 60%),
+             radial-gradient(ellipse 50% 40% at 15% 80%, rgba(87,207,193,.06), transparent 60%);
+  pointer-events:none;
+}
+.hero-grid{
+  max-width:1180px; margin:0 auto; width:100%;
+  display:grid;
+  grid-template-columns:1.05fr .95fr;
+  gap:40px;
+  align-items:center;
+  position:relative; z-index:2;
+}
+.hero-content .eyebrow{margin-bottom:22px;}
+.hero h1{
+  font-size:clamp(38px, 5vw, 62px);
+  line-height:1.06;
+  color:var(--paper);
+}
+.hero h1 em{font-style:italic; color:var(--gold); font-weight:500;}
+.hero p.lede{
+  margin-top:22px;
+  font-size:17px;
+  line-height:1.7;
+  color:var(--ink-dim);
+  max-width:46ch;
+}
+.hero-cta{display:flex; gap:16px; margin-top:36px; flex-wrap:wrap;}
+.btn-primary, .btn-ghost{
+  padding:14px 26px;
+  border-radius:999px;
+  font-size:14.5px;
+  font-weight:500;
+  display:inline-flex; align-items:center; gap:8px;
+  transition:transform .2s ease, background .2s ease, border-color .2s ease;
+  cursor:pointer;
+  border:1px solid transparent;
+}
+.btn-primary{
+  background:var(--gold); color:#241804;
+}
+.btn-primary:hover{transform:translateY(-2px); box-shadow:0 10px 26px rgba(212,162,76,.28);}
+.btn-ghost{
+  border-color:var(--line-strong); color:var(--ink);
+}
+.btn-ghost:hover{border-color:var(--gold); color:var(--gold); transform:translateY(-2px);}
+
+.hero-stats{
+  display:flex; gap:44px;
+  margin-top:64px;
+  padding-top:28px;
+  border-top:1px solid var(--line);
+  max-width:520px;
+}
+.hero-stats .stat b{
+  font-family:var(--serif);
+  font-size:28px; color:var(--paper); display:block; font-weight:600;
+}
+.hero-stats .stat span{
+  font-family:var(--mono); font-size:11.5px; letter-spacing:.06em;
+  color:var(--muted); text-transform:uppercase;
+}
+
+.hero-visual{
+  position:relative;
+  height:560px;
+}
+.hero-visual canvas{width:100% !important; height:100% !important;}
+
+@media (max-width:980px){
+  .hero-grid{grid-template-columns:1fr; text-align:left;}
+  .hero-visual{height:360px; order:-1;}
+  .hero{padding-top:120px;}
+  .hero-stats{gap:28px;}
+}
+
+/* ---------- marquee ---------- */
+.marquee{
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+  padding:22px 0;
+  overflow:hidden;
+  background:var(--bg-panel);
+}
+.marquee-track{
+  display:flex; gap:56px; white-space:nowrap;
+  width:max-content;
+  animation:scrollmarq 32s linear infinite;
+}
+@keyframes scrollmarq{
+  from{transform:translateX(0);}
+  to{transform:translateX(-50%);}
+}
+.marquee-track span{
+  font-family:var(--mono);
+  font-size:13px;
+  letter-spacing:.06em;
+  color:var(--muted);
+  display:inline-flex; align-items:center; gap:56px;
+  text-transform:uppercase;
+}
+.marquee-track span::after{content:'/'; color:var(--gold-line); margin-left:56px;}
+
+/* ---------- section shared ---------- */
+section{position:relative;}
+.section-pad{padding:130px 40px;}
+.section-head{
+  max-width:640px;
+  margin-bottom:64px;
+}
+.section-head h2{
+  font-size:clamp(30px,3.4vw,44px);
+  color:var(--paper);
+  margin-top:16px;
+  line-height:1.15;
+}
+.section-head p{
+  margin-top:18px;
+  color:var(--ink-dim);
+  font-size:16px;
+  line-height:1.7;
+  max-width:52ch;
+}
+
+.reveal{
+  opacity:0;
+  transform:translateY(28px);
+  transition:opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1);
+}
+.reveal.in-view{opacity:1; transform:translateY(0);}
+@media (prefers-reduced-motion:reduce){
+  .reveal{opacity:1; transform:none; transition:none;}
+}
+
+/* ---------- skills ---------- */
+.skills{background:var(--bg);}
+.skills-grid{
+  max-width:1180px; margin:0 auto;
+  display:grid; grid-template-columns:repeat(4,1fr); gap:24px;
+}
+.flip-card{
+  perspective:1400px;
+  height:340px;
+}
+.flip-inner{
+  position:relative; width:100%; height:100%;
+  transform-style:preserve-3d;
+  transition:transform .7s cubic-bezier(.2,.7,.2,1);
+}
+.flip-card.flipped .flip-inner,
+.flip-card:hover .flip-inner{transform:rotateY(180deg);}
+.flip-face{
+  position:absolute; inset:0;
+  border-radius:var(--radius);
+  backface-visibility:hidden;
+  padding:28px 24px;
+  display:flex; flex-direction:column;
+}
+.flip-front{
+  background:var(--bg-panel);
+  border:1px solid var(--line);
+  justify-content:space-between;
+}
+.flip-front .num{
+  font-family:var(--mono); font-size:12px; color:var(--muted);
+}
+.flip-front .icon{
+  width:46px; height:46px;
+  border-radius:12px;
+  background:var(--gold-soft);
+  display:flex; align-items:center; justify-content:center;
+  color:var(--gold);
+  margin:18px 0 22px;
+}
+.flip-front h3{color:var(--paper); font-size:21px;}
+.flip-front .tag{
+  margin-top:10px; font-size:13.5px; color:var(--muted);
+}
+.flip-back{
+  background:var(--gold);
+  color:#241804;
+  transform:rotateY(180deg);
+  justify-content:center;
+}
+.flip-back p{font-size:14.5px; line-height:1.6; font-weight:500;}
+.flip-back .tip-label{
+  font-family:var(--mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase;
+  opacity:.7; margin-bottom:10px; display:block;
+}
+.flip-hint{
+  display:none;
+  margin-top:14px;
+  font-size:12px;
+  font-family:var(--mono);
+  color:var(--muted);
+}
+
+@media (max-width:980px){
+  .skills-grid{grid-template-columns:repeat(2,1fr);}
+}
+@media (max-width:620px){
+  .skills-grid{grid-template-columns:1fr;}
+  .flip-card{height:280px;}
+  .flip-hint{display:block;}
+}
+
+/* ---------- band scale ---------- */
+.scale{background:var(--bg-panel); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+.scale-layout{
+  max-width:1180px; margin:0 auto;
+  display:grid; grid-template-columns:.85fr 1.15fr;
+}
+.scale-sticky{
+  position:sticky; top:0;
+  height:100vh;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  padding:40px;
+}
+.scale-sticky canvas{width:100% !important; max-width:420px; height:420px !important;}
+.scale-readout{
+  text-align:center; margin-top:-30px;
+}
+.scale-readout .band-eyebrow{
+  font-family:var(--mono); font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted);
+}
+.scale-number{
+  font-family:var(--serif); font-size:78px; font-weight:600; color:var(--gold);
+  display:block; line-height:1;
+  transition:color .3s ease;
+}
+.scale-label{
+  font-size:16px; color:var(--paper); display:block; margin-top:6px;
+}
+
+.scale-panels{padding:0 40px 0 0;}
+.scale-panel{
+  min-height:100vh;
+  display:flex; flex-direction:column; justify-content:center;
+  padding:60px 0;
+  border-top:1px solid var(--line);
+}
+.scale-panel:first-child{border-top:none;}
+.scale-panel .band-tag{
+  font-family:var(--mono); font-size:13px; color:var(--gold);
+}
+.scale-panel h3{
+  font-size:clamp(24px,2.6vw,32px); color:var(--paper); margin-top:12px;
+}
+.scale-panel p{
+  margin-top:14px; color:var(--ink-dim); font-size:15.5px; line-height:1.75; max-width:52ch;
+}
+.scale-panel.active h3{color:var(--gold);}
+
+@media (max-width:900px){
+  .scale-layout{grid-template-columns:1fr;}
+  .scale-sticky{position:relative; height:auto; padding:70px 20px 20px;}
+  .scale-sticky canvas{height:280px !important;}
+  .scale-panels{padding:0 24px;}
+  .scale-panel{min-height:auto; padding:36px 0;}
+}
+
+/* ---------- path ---------- */
+.path{background:var(--bg);}
+.path-list{
+  max-width:900px; margin:0 auto;
+  position:relative;
+}
+.path-list::before{
+  content:'';
+  position:absolute; left:27px; top:8px; bottom:8px; width:1px;
+  background:linear-gradient(var(--gold-line), transparent 95%);
+}
+.path-item{
+  display:grid; grid-template-columns:56px 1fr;
+  gap:26px; padding:34px 0;
+  border-bottom:1px solid var(--line);
+}
+.path-item:last-child{border-bottom:none;}
+.path-week{
+  width:56px; height:56px; border-radius:50%;
+  background:var(--bg-panel); border:1px solid var(--gold-line);
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--mono); font-size:13px; color:var(--gold);
+  position:relative; z-index:1;
+}
+.path-item h3{font-size:20px; color:var(--paper);}
+.path-item p{margin-top:8px; color:var(--ink-dim); font-size:15px; line-height:1.7; max-width:56ch;}
+.path-item .path-skill{
+  font-family:var(--mono); font-size:11.5px; letter-spacing:.08em; text-transform:uppercase;
+  color:var(--teal); margin-top:12px; display:block;
+}
+
+/* ---------- proof ---------- */
+.proof{
+  background:var(--bg-panel-2);
+  padding:150px 40px;
+  text-align:center;
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+  position:relative;
+}
+.proof blockquote{
+  font-family:var(--serif);
+  font-style:italic;
+  font-size:clamp(24px,3vw,36px);
+  line-height:1.45;
+  color:var(--paper);
+  max-width:820px;
+  margin:0 auto;
+}
+.proof cite{
+  display:block; margin-top:28px; font-style:normal;
+  font-family:var(--mono); font-size:13px; color:var(--muted);
+}
+.proof-mark{
+  font-family:var(--serif); font-size:110px; color:var(--gold-line);
+  line-height:0; position:absolute; top:70px; left:50%; transform:translateX(-50%);
+}
+
+/* ---------- cta footer ---------- */
+.cta-footer{
+  background:var(--bg);
+  padding:150px 40px 60px;
+  text-align:center;
+}
+.cta-footer h2{
+  font-size:clamp(32px,4.4vw,54px);
+  color:var(--paper);
+  max-width:14ch; margin:0 auto;
+}
+.cta-footer p{
+  margin:22px auto 0; color:var(--ink-dim); font-size:16px; max-width:48ch;
+}
+.signup{
+  display:flex; gap:10px; justify-content:center; margin-top:40px; flex-wrap:wrap;
+}
+.signup input[type=email]{
+  background:var(--bg-panel);
+  border:1px solid var(--line-strong);
+  color:var(--ink);
+  padding:15px 20px;
+  border-radius:999px;
+  font-size:14.5px;
+  min-width:280px;
+  font-family:var(--sans);
+}
+.signup input[type=email]:focus{border-color:var(--gold); outline:none;}
+.signup input[type=email]::placeholder{color:var(--muted);}
+.form-msg{
+  margin-top:16px; font-family:var(--mono); font-size:13px; color:var(--teal); min-height:16px;
+}
+
+footer{
+  margin-top:110px;
+  padding:36px 0 0;
+  border-top:1px solid var(--line);
+  display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;
+}
+footer .foot-links{display:flex; gap:26px;}
+footer a{font-size:13px; color:var(--muted); transition:color .2s ease;}
+footer a:hover{color:var(--ink);}
+footer .foot-copy{font-family:var(--mono); font-size:12px; color:var(--muted);}
+
+@media (max-width:600px){
+  .section-pad{padding:90px 24px;}
+  nav{padding:18px 22px;}
+  .hero{padding:110px 22px 70px;}
+  .cta-footer{padding:100px 22px 50px;}
+}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="logo">Band<em>line</em></div>
+  <div class="nav-links">
+    <a href="#skills">Skills</a>
+    <a href="#scale">Band scale</a>
+    <a href="#path">Study path</a>
+    <a href="#start" class="nav-cta">Start free test</a>
+  </div>
+  <button class="nav-menu-btn" aria-label="Menu">&#9776;</button>
+</nav>
+
+<main>
+
+  <section class="hero" id="hero">
+    <div class="hero-bg-glow"></div>
+    <div class="hero-grid">
+      <div class="hero-content">
+        <p class="eyebrow">IELTS · Academic &amp; General Training</p>
+        <h1>Every point on the<br>band scale <em>is a door.</em></h1>
+        <p class="lede">Bandline turns the IELTS scale into a route, not a mystery. Diagnose where you sit today across all four skills, then follow a plan built around the gap between that score and the one your visa, university or employer needs.</p>
+        <div class="hero-cta">
+          <a class="btn-primary" href="#start">Start free diagnostic</a>
+          <a class="btn-ghost" href="#scale">See the band scale &#8595;</a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat"><b>9.0</b><span>Top band score</span></div>
+          <div class="stat"><b>4</b><span>Skills tested</span></div>
+          <div class="stat"><b>2h 44m</b><span>Total test time</span></div>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <canvas id="hero-canvas"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track" id="marqueeTrack">
+      <span>Listening</span><span>Reading</span><span>Writing</span><span>Speaking</span><span>Band 0 to 9</span>
+      <span>Listening</span><span>Reading</span><span>Writing</span><span>Speaking</span><span>Band 0 to 9</span>
+    </div>
+  </div>
+
+  <section class="skills section-pad" id="skills">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">The four skills</span>
+        <h2>One test, four separate disciplines.</h2>
+        <p>Every skill is scored on its own, then averaged into your overall band. Strength in one won't cover a gap in another — each needs its own practice.</p>
+      </div>
+
+      <div class="skills-grid">
+
+        <div class="flip-card reveal" tabindex="0">
+          <div class="flip-inner">
+            <div class="flip-face flip-front">
+              <span class="num">01</span>
+              <div>
+                <div class="icon">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 12a9 9 0 0 1 18 0v6a2 2 0 0 1-2 2h-1a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h3M3 12v5a2 2 0 0 0 2 2h1a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1H3"/></svg>
+                </div>
+                <h3>Listening</h3>
+                <p class="tag">40 questions · 30 min + transfer time</p>
+              </div>
+            </div>
+            <div class="flip-face flip-back">
+              <span class="tip-label">What it tests</span>
+              <p>Four recordings, one hearing only. You'll follow a conversation, a monologue, and an academic discussion, then answer as the audio moves on.</p>
+            </div>
+          </div>
+          <span class="flip-hint">Tap for detail</span>
+        </div>
+
+        <div class="flip-card reveal" tabindex="0">
+          <div class="flip-inner">
+            <div class="flip-face flip-front">
+              <span class="num">02</span>
+              <div>
+                <div class="icon">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 19.5V6a2 2 0 0 1 2-2h13v14H6a2 2 0 0 0 0 4h13M8 8h8M8 12h6"/></svg>
+                </div>
+                <h3>Reading</h3>
+                <p class="tag">40 questions · 60 minutes</p>
+              </div>
+            </div>
+            <div class="flip-face flip-back">
+              <span class="tip-label">What it tests</span>
+              <p>Three long passages, no extra time to transfer answers. Skimming for structure first is what separates a band 6 from a band 8 here.</p>
+            </div>
+          </div>
+          <span class="flip-hint">Tap for detail</span>
+        </div>
+
+        <div class="flip-card reveal" tabindex="0">
+          <div class="flip-inner">
+            <div class="flip-face flip-front">
+              <span class="num">03</span>
+              <div>
+                <div class="icon">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+                </div>
+                <h3>Writing</h3>
+                <p class="tag">2 tasks · 60 minutes</p>
+              </div>
+            </div>
+            <div class="flip-face flip-back">
+              <span class="tip-label">What it tests</span>
+              <p>Task 1 describes data or a process, Task 2 argues a position. Task 2 counts double, so time protects it, not the other way round.</p>
+            </div>
+          </div>
+          <span class="flip-hint">Tap for detail</span>
+        </div>
+
+        <div class="flip-card reveal" tabindex="0">
+          <div class="flip-inner">
+            <div class="flip-face flip-front">
+              <span class="num">04</span>
+              <div>
+                <div class="icon">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3Z M19 11a7 7 0 0 1-14 0 M12 18v3"/></svg>
+                </div>
+                <h3>Speaking</h3>
+                <p class="tag">3 parts · 11–14 minutes</p>
+              </div>
+            </div>
+            <div class="flip-face flip-back">
+              <span class="tip-label">What it tests</span>
+              <p>A face-to-face conversation, a two-minute solo topic, then a discussion that digs into your opinions. Fluency is judged, not accent.</p>
+            </div>
+          </div>
+          <span class="flip-hint">Tap for detail</span>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="scale" id="scale">
+    <div class="scale-layout">
+      <div class="scale-sticky">
+        <canvas id="scale-canvas"></canvas>
+        <div class="scale-readout">
+          <span class="band-eyebrow">Your target</span>
+          <span class="scale-number" id="scaleNumber">0</span>
+          <span class="scale-label" id="scaleLabelText">Did not attempt</span>
+        </div>
+      </div>
+      <div class="scale-panels" id="scalePanels">
+
+        <div class="scale-panel reveal" data-band="0">
+          <span class="band-tag">Band 0</span>
+          <h3>Did not attempt</h3>
+          <p>No assessable evidence was submitted. This is a starting line, not a skill level — everyone above it once stood here too.</p>
+        </div>
+
+        <div class="scale-panel reveal" data-band="3">
+          <span class="band-tag">Band 3</span>
+          <h3>Extremely limited user</h3>
+          <p>Communication breaks down often, even in familiar situations. At this stage the priority is core vocabulary and basic sentence structure, not exam technique.</p>
+        </div>
+
+        <div class="scale-panel reveal" data-band="4">
+          <span class="band-tag">Band 4</span>
+          <h3>Limited user</h3>
+          <p>Basic ideas get across in familiar contexts, but complex language causes frequent problems. Reading and listening for gist becomes the next milestone.</p>
+        </div>
+
+        <div class="scale-panel reveal" data-band="5">
+          <span class="band-tag">Band 5</span>
+          <h3>Modest user</h3>
+          <p>A working command of English that copes with overall meaning in most situations, though errors and misunderstandings are still frequent.</p>
+        </div>
+
+        <div class="scale-panel reveal" data-band="6">
+          <span class="band-tag">Band 6</span>
+          <h3>Competent user</h3>
+          <p>Generally effective, with occasional inaccuracies and misunderstandings, especially in unfamiliar situations. Most university entry thresholds start here.</p>
+        </div>
+
+        <div class="scale-panel reveal" data-band="7">
+          <span class="band-tag">Band 7</span>
+          <h3>Good user</h3>
+          <p>Operational command with occasional inaccuracies. Handles complex language well and understands detailed reasoning, with some slips under pressure.</p>
+        </div>
+
+        <div class="scale-panel reveal" data-band="8">
+          <span class="band-tag">Band 8</span>
+          <h3>Very good user</h3>
+          <p>Fully operational command, with only occasional unsystematic errors. Handles unfamiliar situations well and argues with real nuance.</p>
+        </div>
+
+        <div class="scale-panel reveal" data-band="9">
+          <span class="band-tag">Band 9</span>
+          <h3>Expert user</h3>
+          <p>Full operational command of English. Appropriate, accurate, and fluent, with complete understanding — the ceiling most candidates never need to reach.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="path section-pad" id="path">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">A four-week route</span>
+        <h2>From diagnostic to test day.</h2>
+        <p>The order matters — each week is built on what the last one exposed, not a fixed syllabus everyone follows the same way.</p>
+      </div>
+
+      <div class="path-list">
+        <div class="path-item reveal">
+          <div class="path-week">W1</div>
+          <div>
+            <h3>Diagnose the real gap</h3>
+            <p>A full mock test under timed conditions, scored against all four skills, so the plan starts from evidence instead of a guess about your level.</p>
+            <span class="path-skill">All four skills</span>
+          </div>
+        </div>
+        <div class="path-item reveal">
+          <div class="path-week">W2</div>
+          <div>
+            <h3>Fix the lowest skill first</h3>
+            <p>Your overall band is dragged down by your weakest section, not your average. Focused drills close that one gap before anything else.</p>
+            <span class="path-skill">Weakest skill</span>
+          </div>
+        </div>
+        <div class="path-item reveal">
+          <div class="path-week">W3</div>
+          <div>
+            <h3>Train under real timing</h3>
+            <p>Full-length timed sections, back to back, with feedback on where minutes are lost — pacing costs more bands than raw ability at this stage.</p>
+            <span class="path-skill">Writing &amp; speaking</span>
+          </div>
+        </div>
+        <div class="path-item reveal">
+          <div class="path-week">W4</div>
+          <div>
+            <h3>Simulate test day</h3>
+            <p>One final full mock, in test-day order, followed by a band-by-band breakdown so nothing on the actual day is unfamiliar.</p>
+            <span class="path-skill">Full mock exam</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="proof">
+    <span class="proof-mark" aria-hidden="true">&#8221;</span>
+    <blockquote class="reveal">I came in scoring a 5.5 on writing and left with a 7. Seeing the band scale laid out made me stop guessing what the examiner wanted.</blockquote>
+    <cite class="reveal">Nadia R. — Band 7.5 overall, applying for a master's in Toronto</cite>
+  </section>
+
+  <section class="cta-footer" id="start">
+    <div class="wrap">
+      <h2 class="reveal">Find out your band before test day does.</h2>
+      <p class="reveal">A free 40-minute diagnostic scores all four skills and shows exactly which band is holding your average down.</p>
+      <form class="signup reveal" id="signupForm" novalidate>
+        <input type="email" id="emailInput" placeholder="name@email.com" aria-label="Email address" required />
+        <button type="submit" class="btn-primary">Start free diagnostic</button>
+      </form>
+      <p class="form-msg" id="formMsg" role="status"></p>
+
+      <footer>
+        <div class="foot-copy">Bandline · a scroll-driven guide to the IELTS band scale</div>
+        <div class="foot-links">
+          <a href="#skills">Skills</a>
+          <a href="#scale">Band scale</a>
+          <a href="#path">Study path</a>
+        </div>
+      </footer>
+    </div>
+  </section>
+
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+<script>
+(function(){
+  "use strict";
+
+  var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var isSmall = window.innerWidth < 700;
+
+  /* ---------- nav scroll state ---------- */
+  var nav = document.getElementById('nav');
+  window.addEventListener('scroll', function(){
+    if(window.scrollY > 40){ nav.classList.add('scrolled'); }
+    else{ nav.classList.remove('scrolled'); }
+  }, {passive:true});
+
+  /* ---------- reveal on scroll ---------- */
+  var revealEls = document.querySelectorAll('.reveal');
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          entry.target.classList.add('in-view');
+          io.unobserve(entry.target);
+        }
+      });
+    }, {threshold:0.15, rootMargin:'0px 0px -60px 0px'});
+    revealEls.forEach(function(el){ io.observe(el); });
+  } else {
+    revealEls.forEach(function(el){ el.classList.add('in-view'); });
+  }
+
+  /* ---------- flip cards on touch ---------- */
+  document.querySelectorAll('.flip-card').forEach(function(card){
+    card.addEventListener('click', function(){
+      if(window.matchMedia('(hover: none)').matches){
+        card.classList.toggle('flipped');
+      }
+    });
+    card.addEventListener('keypress', function(e){
+      if(e.key === 'Enter' || e.key === ' '){
+        card.classList.toggle('flipped');
+      }
+    });
+  });
+
+  /* ---------- signup form ---------- */
+  var form = document.getElementById('signupForm');
+  var emailInput = document.getElementById('emailInput');
+  var formMsg = document.getElementById('formMsg');
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var val = emailInput.value.trim();
+    var valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
+    if(!valid){
+      formMsg.textContent = 'Enter a valid email address to continue.';
+      formMsg.style.color = '#E2836E';
+      return;
+    }
+    formMsg.style.color = '';
+    formMsg.textContent = 'You\'re on the list — check your inbox to start the diagnostic.';
+    emailInput.value = '';
+  });
+
+  /* =========================================================
+     REALISM HELPERS
+     A) a small "studio" scene fed through PMREMGenerator to get a
+        real reflective environment map (soft light panels, like a
+        photo studio) — this is what makes the metal read as metal.
+     B) a Canvas2D-painted gauge face (brushed rings + vignette)
+        used as a real texture map instead of a flat color.
+     ========================================================= */
+  function buildStudioEnvironment(renderer){
+    var pmrem = new THREE.PMREMGenerator(renderer);
+    pmrem.compileEquirectangularShader();
+
+    var envScene = new THREE.Scene();
+    envScene.background = new THREE.Color(0x0b1220);
+
+    function panel(w,h,x,y,z,ry,color,intensity){
+      var m = new THREE.Mesh(
+        new THREE.PlaneGeometry(w,h),
+        new THREE.MeshBasicMaterial({color:color})
+      );
+      m.material.color.multiplyScalar(intensity);
+      m.position.set(x,y,z);
+      m.rotation.y = ry;
+      envScene.add(m);
+    }
+    panel(6,4,0,2,-6,0, 0xfff3d9, 3.2);
+    panel(4,6,-6,0,0, Math.PI/2, 0x9fd8ff, 1.6);
+    panel(4,6,6,0,0, -Math.PI/2, 0xffd9a8, 1.4);
+    panel(8,8,0,-5,2,0, 0x57cfc1, 0.5);
+
+    var envTex = pmrem.fromScene(envScene, 0.04).texture;
+    pmrem.dispose();
+    return envTex;
+  }
+
+  function buildFaceTexture(){
+    var size = 512;
+    var c = document.createElement('canvas');
+    c.width = size; c.height = size;
+    var ctx = c.getContext('2d');
+
+    var grad = ctx.createRadialGradient(size*0.5,size*0.42,size*0.05,size*0.5,size*0.5,size*0.62);
+    grad.addColorStop(0,'#1c2740');
+    grad.addColorStop(0.55,'#16213A');
+    grad.addColorStop(1,'#0e1626');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0,0,size,size);
+
+    ctx.strokeStyle = 'rgba(212,162,76,0.10)';
+    ctx.lineWidth = 1;
+    for(var r=size*0.1; r<size*0.5; r+=size*0.045){
+      ctx.beginPath();
+      ctx.arc(size/2,size/2,r,0,Math.PI*2);
+      ctx.stroke();
+    }
+
+    ctx.strokeStyle = 'rgba(255,255,255,0.03)';
+    for(var i=0;i<720;i++){
+      ctx.beginPath();
+      var a = (i/720)*Math.PI*2;
+      var r0 = size*0.46, r1 = size*0.5;
+      ctx.moveTo(size/2+Math.cos(a)*r0, size/2+Math.sin(a)*r0);
+      ctx.lineTo(size/2+Math.cos(a)*r1, size/2+Math.sin(a)*r1);
+      ctx.stroke();
+    }
+
+    var vig = ctx.createRadialGradient(size*0.5,size*0.5,size*0.25,size*0.5,size*0.5,size*0.5);
+    vig.addColorStop(0,'rgba(0,0,0,0)');
+    vig.addColorStop(1,'rgba(0,0,0,0.45)');
+    ctx.fillStyle = vig;
+    ctx.fillRect(0,0,size,size);
+
+    var tex = new THREE.CanvasTexture(c);
+    tex.encoding = THREE.sRGBEncoding;
+    tex.anisotropy = 4;
+    return tex;
+  }
+
+  /* =========================================================
+     THREE.JS — shared dial builder (physically-based materials)
+     ========================================================= */
+  function buildDial(opts){
+    var group = new THREE.Group();
+    var faceTexture = buildFaceTexture();
+
+    var faceGeo = new THREE.CircleGeometry(opts.radius * 1.18, 64);
+    var faceMat = new THREE.MeshPhysicalMaterial({
+      map: faceTexture,
+      roughness:0.42, metalness:0.05,
+      clearcoat:0.55, clearcoatRoughness:0.28,
+      envMapIntensity:0.6,
+      side: THREE.DoubleSide
+    });
+    var face = new THREE.Mesh(faceGeo, faceMat);
+    face.position.z = -0.15;
+    face.receiveShadow = true;
+    group.add(face);
+
+    var ringGeo = new THREE.TorusGeometry(opts.radius*1.18, opts.radius*0.03, 16, 96);
+    var ringMat = new THREE.MeshPhysicalMaterial({
+      color:0xD4A24C, roughness:0.28, metalness:1,
+      clearcoat:0.7, clearcoatRoughness:0.15, envMapIntensity:1.3
+    });
+    var ring = new THREE.Mesh(ringGeo, ringMat);
+    ring.castShadow = true;
+    group.add(ring);
+
+    var tickMatGold = new THREE.MeshPhysicalMaterial({color:0xD4A24C, roughness:0.3, metalness:1, clearcoat:0.6, clearcoatRoughness:0.2, envMapIntensity:1.2});
+    var tickMatDim = new THREE.MeshPhysicalMaterial({color:0x818BA1, roughness:0.55, metalness:0.7, envMapIntensity:0.7});
+
+    var ticks = [];
+    var count = 10;
+    var startDeg = -125, endDeg = 125;
+    for(var i=0;i<count;i++){
+      var t = i/(count-1);
+      var deg = startDeg + t*(endDeg-startDeg);
+      var rad = THREE.MathUtils.degToRad(deg);
+      var isMajor = (i % 3 === 0) || i === count-1;
+      var tickGeo = new THREE.BoxGeometry(isMajor?0.05:0.03, isMajor?0.22:0.13, 0.035);
+      var tick = new THREE.Mesh(tickGeo, tickMatDim.clone());
+      var r = opts.radius*1.0;
+      tick.position.set(Math.sin(rad)*r, Math.cos(rad)*r, 0.02);
+      tick.rotation.z = -rad;
+      tick.castShadow = true;
+      tick.userData.baseColor = 0x818BA1;
+      group.add(tick);
+      ticks.push(tick);
+    }
+
+    var needleGroup = new THREE.Group();
+
+    var nr = opts.radius;
+    var needlePts = [
+      new THREE.Vector2(0.0, -0.11*nr),
+      new THREE.Vector2(0.045*nr, -0.04*nr),
+      new THREE.Vector2(0.04*nr, 0.5*nr),
+      new THREE.Vector2(0.0, 0.62*nr),
+      new THREE.Vector2(-0.04*nr, 0.5*nr),
+      new THREE.Vector2(-0.045*nr, -0.04*nr)
+    ];
+    var needleShape = new THREE.Shape(needlePts);
+    var needleGeo = new THREE.ExtrudeGeometry(needleShape, {depth:0.045, bevelEnabled:true, bevelThickness:0.012, bevelSize:0.012, bevelSegments:3, steps:1});
+    var needleMat = new THREE.MeshPhysicalMaterial({
+      color:0xD4A24C, roughness:0.22, metalness:1,
+      clearcoat:0.8, clearcoatRoughness:0.12, envMapIntensity:1.4
+    });
+    var needle = new THREE.Mesh(needleGeo, needleMat);
+    needle.castShadow = true;
+    needleGroup.add(needle);
+
+    var hubGeo = new THREE.CylinderGeometry(0.13,0.15,0.09,32);
+    var hubMat = new THREE.MeshPhysicalMaterial({color:0xF1EADD, roughness:0.25, metalness:0.85, clearcoat:0.5, envMapIntensity:1.1});
+    var hub = new THREE.Mesh(hubGeo, hubMat);
+    hub.rotation.x = Math.PI/2;
+    hub.position.z = 0.03;
+    hub.castShadow = true;
+    needleGroup.add(hub);
+
+    group.add(needleGroup);
+
+    return {group:group, needleGroup:needleGroup, ticks:ticks, startDeg:startDeg, endDeg:endDeg};
+  }
+
+  function angleForBand(dial, band){
+    var t = band/9;
+    var deg = dial.startDeg + t*(dial.endDeg - dial.startDeg);
+    return THREE.MathUtils.degToRad(deg);
+  }
+
+  /* =========================================================
+     HERO SCENE — ambient rotating dial
+     ========================================================= */
+  var heroCanvas = document.getElementById('hero-canvas');
+  var heroScene, heroCamera, heroRenderer, heroDial, heroParticles;
+
+  function initHero(){
+    var w = heroCanvas.parentElement.clientWidth;
+    var h = heroCanvas.parentElement.clientHeight;
+
+    heroScene = new THREE.Scene();
+    heroCamera = new THREE.PerspectiveCamera(38, w/h, 0.1, 100);
+    heroCamera.position.set(0,0,7.5);
+
+    heroRenderer = new THREE.WebGLRenderer({canvas:heroCanvas, antialias:true, alpha:true});
+    heroRenderer.setSize(w,h);
+    heroRenderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+    heroRenderer.outputEncoding = THREE.sRGBEncoding;
+    heroRenderer.toneMapping = THREE.ACESFilmicToneMapping;
+    heroRenderer.toneMappingExposure = 1.05;
+    heroRenderer.shadowMap.enabled = true;
+    heroRenderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+    heroScene.environment = buildStudioEnvironment(heroRenderer);
+
+    heroScene.add(new THREE.AmbientLight(0xffffff, 0.35));
+    var dl = new THREE.DirectionalLight(0xffffff, 1.8);
+    dl.position.set(3,4,5);
+    dl.castShadow = true;
+    dl.shadow.mapSize.set(1024,1024);
+    dl.shadow.camera.left = -3; dl.shadow.camera.right = 3;
+    dl.shadow.camera.top = 3; dl.shadow.camera.bottom = -3;
+    dl.shadow.radius = 3;
+    heroScene.add(dl);
+    var dl2 = new THREE.DirectionalLight(0x57cfc1, 0.4);
+    dl2.position.set(-4,-2,3);
+    heroScene.add(dl2);
+
+    heroDial = buildDial({radius:2.1});
+    heroDial.group.rotation.x = -0.18;
+    heroDial.group.rotation.y = 0.35;
+    heroScene.add(heroDial.group);
+
+    var targetBand = 7.5;
+    heroDial.needleGroup.rotation.z = -angleForBand(heroDial, targetBand);
+    heroDial.ticks.forEach(function(tick, i){
+      if(i >= 7){ tick.material.color.setHex(0xD4A24C); }
+    });
+
+    var pCount = isSmall ? 16 : 34;
+    var pGeo = new THREE.SphereGeometry(0.028, 8, 8);
+    var pMat = new THREE.MeshBasicMaterial({color:0x57cfc1, transparent:true, opacity:0.55});
+    heroParticles = new THREE.Group();
+    for(var i=0;i<pCount;i++){
+      var m = new THREE.Mesh(pGeo, pMat);
+      m.position.set((Math.random()-0.5)*8, (Math.random()-0.5)*6, (Math.random()-0.5)*4 - 1);
+      m.userData.speed = 0.15 + Math.random()*0.25;
+      m.userData.offset = Math.random()*Math.PI*2;
+      heroParticles.add(m);
+    }
+    heroScene.add(heroParticles);
+  }
+
+  var heroClock = new THREE.Clock();
+  function animateHero(){
+    requestAnimationFrame(animateHero);
+    if(!heroRenderer) return;
+    var t = heroClock.getElapsedTime();
+    if(!reducedMotion){
+      heroDial.group.rotation.y = 0.35 + Math.sin(t*0.18)*0.18;
+      heroDial.group.rotation.x = -0.18 + Math.cos(t*0.15)*0.05;
+      heroParticles.children.forEach(function(p){
+        p.position.y += Math.sin(t*p.userData.speed + p.userData.offset)*0.0018;
+        p.position.x += Math.cos(t*p.userData.speed*0.6 + p.userData.offset)*0.0012;
+      });
+    }
+    heroRenderer.render(heroScene, heroCamera);
+  }
+
+  /* =========================================================
+     SCALE SCENE — scroll driven needle 0 -> 9
+     ========================================================= */
+  var scaleCanvas = document.getElementById('scale-canvas');
+  var scaleScene, scaleCamera, scaleRenderer, scaleDial;
+  var bandLabels = {
+    0:'Did not attempt', 3:'Extremely limited user', 4:'Limited user',
+    5:'Modest user', 6:'Competent user', 7:'Good user',
+    8:'Very good user', 9:'Expert user'
+  };
+  var scaleNumberEl = document.getElementById('scaleNumber');
+  var scaleLabelEl = document.getElementById('scaleLabelText');
+
+  function initScale(){
+    var w = scaleCanvas.parentElement.clientWidth;
+    var h = 420;
+
+    scaleScene = new THREE.Scene();
+    scaleCamera = new THREE.PerspectiveCamera(38, w/h, 0.1, 100);
+    scaleCamera.position.set(0,0,6.4);
+
+    scaleRenderer = new THREE.WebGLRenderer({canvas:scaleCanvas, antialias:true, alpha:true});
+    scaleRenderer.setSize(w,h);
+    scaleRenderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+    scaleRenderer.outputEncoding = THREE.sRGBEncoding;
+    scaleRenderer.toneMapping = THREE.ACESFilmicToneMapping;
+    scaleRenderer.toneMappingExposure = 1.05;
+    scaleRenderer.shadowMap.enabled = true;
+    scaleRenderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+    scaleScene.environment = buildStudioEnvironment(scaleRenderer);
+
+    scaleScene.add(new THREE.AmbientLight(0xffffff, 0.35));
+    var dl = new THREE.DirectionalLight(0xffffff, 1.7);
+    dl.position.set(2,3,5);
+    dl.castShadow = true;
+    dl.shadow.mapSize.set(1024,1024);
+    dl.shadow.camera.left = -3; dl.shadow.camera.right = 3;
+    dl.shadow.camera.top = 3; dl.shadow.camera.bottom = -3;
+    dl.shadow.radius = 3;
+    scaleScene.add(dl);
+    var dl2 = new THREE.DirectionalLight(0x57cfc1, 0.35);
+    dl2.position.set(-3,-1,2);
+    scaleScene.add(dl2);
+
+    scaleDial = buildDial({radius:2.3});
+    scaleScene.add(scaleDial.group);
+    scaleDial.needleGroup.rotation.z = -angleForBand(scaleDial, 0);
+
+    scaleRenderer.render(scaleScene, scaleCamera);
+  }
+
+  function setScaleBand(bandFloat){
+    var clamped = Math.max(0, Math.min(9, bandFloat));
+    scaleDial.needleGroup.rotation.z = -angleForBand(scaleDial, clamped);
+    scaleDial.ticks.forEach(function(tick, i){
+      var tickBand = (i/(scaleDial.ticks.length-1))*9;
+      var active = tickBand <= clamped + 0.15;
+      tick.material.color.setHex(active ? 0xD4A24C : 0x818BA1);
+      tick.scale.setScalar(active ? 1.15 : 1);
+    });
+    scaleRenderer.render(scaleScene, scaleCamera);
+
+    var rounded = Math.round(clamped);
+    var keys = Object.keys(bandLabels).map(Number).sort(function(a,b){return a-b;});
+    var nearest = keys[0];
+    keys.forEach(function(k){ if(k<=rounded) nearest = k; });
+    scaleNumberEl.textContent = rounded;
+    scaleLabelEl.textContent = bandLabels[nearest];
+  }
+
+  /* ---------- init everything after libs load ---------- */
+  function resizeAll(){
+    if(heroRenderer){
+      var w = heroCanvas.parentElement.clientWidth, h = heroCanvas.parentElement.clientHeight;
+      heroCamera.aspect = w/h; heroCamera.updateProjectionMatrix();
+      heroRenderer.setSize(w,h);
+    }
+    if(scaleRenderer){
+      var w2 = scaleCanvas.parentElement.clientWidth, h2 = 420;
+      scaleCamera.aspect = w2/h2; scaleCamera.updateProjectionMatrix();
+      scaleRenderer.setSize(w2,h2);
+    }
+  }
+  window.addEventListener('resize', resizeAll);
+
+  if(typeof THREE !== 'undefined'){
+    initHero();
+    animateHero();
+    initScale();
+    setScaleBand(0);
+  }
+
+  /* =========================================================
+     GSAP ScrollTrigger — pin dial, drive band value, panel highlight
+     ========================================================= */
+  if(typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined'){
+    gsap.registerPlugin(ScrollTrigger);
+
+    var panels = gsap.utils.toArray('.scale-panel');
+    var scalePanelsWrap = document.getElementById('scalePanels');
+
+    ScrollTrigger.create({
+      trigger: scalePanelsWrap,
+      start: 'top top',
+      end: 'bottom bottom',
+      onUpdate: function(self){
+        var band = self.progress * 9;
+        if(scaleRenderer){ setScaleBand(band); }
+      }
+    });
+
+    panels.forEach(function(panel){
+      ScrollTrigger.create({
+        trigger: panel,
+        start: 'top center',
+        end: 'bottom center',
+        onEnter: function(){ panel.classList.add('active'); },
+        onEnterBack: function(){ panel.classList.add('active'); },
+        onLeave: function(){ panel.classList.remove('active'); },
+        onLeaveBack: function(){ panel.classList.remove('active'); }
+      });
+    });
+
+    if(!reducedMotion){
+      gsap.to('.hero-visual', {
+        y: -40,
+        ease:'none',
+        scrollTrigger:{
+          trigger:'.hero',
+          start:'top top',
+          end:'bottom top',
+          scrub:true
+        }
+      });
+    }
+  }
+
+})();
+</script>
+
+</body>
+</html>
